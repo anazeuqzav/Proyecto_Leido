@@ -62,16 +62,24 @@
                 android:textSize="16sp" />
 
             <!-- Campo de Email -->
-            <EditText
-                android:id="@+id/usernameEditText"
+            <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="20dp"
-                android:background="@drawable/rounded_background_edtittext"
-                android:fontFamily="@font/poppins_regular"
-                android:inputType="textEmailAddress"
-                android:padding="12dp"
-                android:textColor="@color/md_theme_onSurfaceVariant" />
+                app:boxStrokeColor="@color/md_theme_primary"
+                app:boxBackgroundMode="none"
+                app:hintTextAppearance="@style/TextAppearance.MaterialComponents.Body1">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/usernameEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins_regular"
+                    android:inputType="textEmailAddress"
+                    android:padding="12dp"
+                    android:background="@drawable/rounded_background_edtittext"
+                    android:textColor="@color/md_theme_onSurfaceVariant" />
+            </com.google.android.material.textfield.TextInputLayout>
 
             <TextView
                 android:layout_width="match_parent"
@@ -83,16 +91,21 @@
                 android:textSize="16sp" />
 
             <!-- Campo de Contraseña -->
-            <EditText
-                android:id="@+id/passwordEditText"
+            <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="20dp"
-                android:background="@drawable/rounded_background_edtittext"
-                android:fontFamily="@font/poppins_regular"
-                android:inputType="textPassword"
-                android:padding="12dp"
-                android:textColor="@color/md_theme_outlineVariant_mediumContrast" />
+                app:passwordToggleEnabled="true">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/passwordEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins_regular"
+                    android:inputType="textPassword"
+                    android:padding="12dp"
+                    android:background="@drawable/rounded_background_edtittext"
+                    android:textColor="@color/md_theme_outlineVariant_mediumContrast" />
+            </com.google.android.material.textfield.TextInputLayout>
 
             <TextView
                 android:layout_width="match_parent"
