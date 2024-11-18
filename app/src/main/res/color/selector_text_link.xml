@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:color="@color/md_theme_strongPink" android:state_pressed="true" /> <!-- Color rosa cuando se presiona -->
+    <item android:color="@color/md_theme_primary" /> <!-- Color normal -->
+</selector>

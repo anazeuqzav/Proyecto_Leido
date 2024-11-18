@@ -1,0 +1,17 @@
+<!-- res/drawable/border_selector.xml -->
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_focused="true">
+        <shape android:shape="rectangle">
+            <corners android:radius="10dp"/>
+            <stroke android:width="2dp" android:color="@color/md_theme_strongPink"/>
+            <solid android:color="#F3F3F3"/>
+        </shape>
+    </item>
+    <item>
+        <shape android:shape="rectangle">
+            <corners android:radius="10dp"/>
+            <stroke android:width="1dp" android:color="#C0C0C0"/> <!-- Color gris para el borde cuando no está enfocado -->
+            <solid android:color="#F3F3F3"/>
+        </shape>
+    </item>
+</selector>
