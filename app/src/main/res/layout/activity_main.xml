@@ -1,36 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center"
-    android:orientation="vertical"
+    tools:context=".MainActivity"
     android:background="@color/md_theme_backgroundPink">
 
-    <!-- Texto de bienvenida -->
-    <TextView
-        android:id="@+id/usernameTextView"
-        android:layout_width="wrap_content"
+    <!-- RecyclerView para mostrar la lista de libros -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/my_recycler_view"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:fontFamily="@font/poppins_regular"
-        android:text="nombre usuario"
-        android:textColor="@color/md_theme_primary"
-        android:textSize="24sp" />
-    <TextView
-        android:id="@+id/welcomeTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/anton_regular"
-        android:text="¡Bienvenido a LEIDO!"
-        android:textColor="@color/md_theme_primary"
-        android:textSize="36sp" />
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/poppins_regular"
-        android:text="Pronto podrás guardar aquí tus próximas lecturas y tus libros favoritos"
-        android:layout_margin="40dp"
-        android:textAlignment="center"
-        android:textColor="@color/md_theme_primary"
-        android:textSize="24sp" />
+        android:padding="25dp" />
 
-</LinearLayout>
+</FrameLayout>

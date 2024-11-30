@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Estilo para bordes redondeados -->
+    <style name="roundedCornersImageView">
+        <item name="cornerFamily">rounded</item>  <!-- Establece esquinas redondeadas -->
+        <item name="cornerSize">16dp</item>  <!-- Tamaño del radio de las esquinas -->
+    </style>
+</resources>

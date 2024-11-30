@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="4dp"
+    android:backgroundTint="@color/md_theme_backgroundPink"
+    app:cardCornerRadius="16dp"
+    app:strokeColor="@color/md_theme_primary"
+    app:strokeWidth="1dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="8dp">
+
+        <!-- Imagen de la portada del libro -->
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/bookCover"
+            android:layout_width="90dp"
+            android:layout_height="130dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/cover_roundoutline"
+            android:scaleType="centerCrop"
+            android:src="@drawable/ic_placeholder"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:shapeAppearanceOverlay="@style/roundedCornersImageView" />
+
+        <!-- Título del libro -->
+        <TextView
+            android:id="@+id/bookTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="10dp"
+            android:fontFamily="@font/poppins_bold"
+            android:text="Book Title"
+            android:maxLines="2"
+            android:textColor="@color/md_theme_primary"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toEndOf="@+id/bookCover"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <!-- Autor -->
+        <TextView
+            android:id="@+id/bookAuthor"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:fontFamily="@font/poppins_bold"
+            android:text="Author Name"
+            android:textColor="@color/md_theme_primary"
+            android:textSize="14sp"
+            app:layout_constraintStart_toEndOf="@+id/bookCover"
+            app:layout_constraintTop_toBottomOf="@+id/bookTitle" />
+
+        <!-- Año y Género -->
+        <TextView
+            android:id="@+id/book_details"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:fontFamily="@font/poppins_regular"
+            android:text="Year | Genre"
+            android:textColor="@color/md_theme_outlineVariant_mediumContrast"
+            android:textSize="12sp"
+            app:layout_constraintStart_toEndOf="@+id/bookCover"
+            app:layout_constraintTop_toBottomOf="@+id/bookAuthor" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="50dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginLeft="20dp"
+            app:layout_constraintStart_toEndOf="@+id/bookCover"
+            app:layout_constraintTop_toBottomOf="@+id/book_details">
+
+        <!-- Ícono de Editar -->
+        <ImageView
+            android:id="@+id/editIcon"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginEnd="40dp"
+            android:contentDescription="Editar libro"
+            android:src="@drawable/baseline_edit_24"
+             />
+
+        <!-- Ícono de Borrar -->
+        <ImageView
+            android:id="@+id/deleteIcon"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:contentDescription="Borrar libro"
+            android:src="@drawable/baseline_delete_24"/>
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</com.google.android.material.card.MaterialCardView>
