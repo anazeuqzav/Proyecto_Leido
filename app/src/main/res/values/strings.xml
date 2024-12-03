@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">Proyecto_Leido</string>
+    <string name="username">admin</string>
+    <string name="password">admin</string>
+
+    <!-- Errores de validación en LoginActivity.kt -->
+    <string name="error_empty_username">El campo de usuario no puede estar vacío</string>
+    <string name="error_empty_password">El campo de contraseña no puede estar vacío</string>
+    <string name="error_invalid_username">Usuario no registrado</string>
+    <string name="error_invalid_password">Contraseña incorrecta</string>
 </resources>

@@ -81,24 +81,27 @@
             android:layout_marginTop="10dp"
             android:layout_marginStart="20dp"
             android:layout_marginLeft="20dp"
-            app:layout_constraintStart_toEndOf="@+id/bookCover"
+            android:layout_marginEnd="20dp"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/book_details">
 
         <!-- Ícono de Editar -->
         <ImageView
-            android:id="@+id/editIcon"
+            android:id="@+id/updateButton"
             android:layout_width="20dp"
             android:layout_height="20dp"
             android:layout_marginEnd="40dp"
+            android:background="?selectableItemBackground"
             android:contentDescription="Editar libro"
             android:src="@drawable/baseline_edit_24"
              />
 
         <!-- Ícono de Borrar -->
         <ImageView
-            android:id="@+id/deleteIcon"
+            android:id="@+id/deleteButton"
             android:layout_width="20dp"
             android:layout_height="20dp"
+            android:background="?selectableItemBackground"
             android:contentDescription="Borrar libro"
             android:src="@drawable/baseline_delete_24"/>
         </LinearLayout>

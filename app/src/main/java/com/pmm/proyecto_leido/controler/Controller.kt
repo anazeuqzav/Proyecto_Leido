@@ -35,11 +35,28 @@ class Controller(val context: Context) {
         }
     }
 
+    // Método para eliminar un libro dado su posición
+    private fun deleteBook(position: Int) {
+        val removedBook = listBooks.removeAt(position)
+        Toast.makeText(context, "Eliminado: ${removedBook.title}", Toast.LENGTH_SHORT).show()
+        setAdapter() // Refresca el adaptador
+    }
+
+
+    private fun updateBook(position: Int) {
+        val bookToUpdate = listBooks[position]
+        Toast.makeText(context, "Actualizar: ${bookToUpdate.title}", Toast.LENGTH_SHORT).show()
+        // Aquí podrías abrir un diálogo o actividad para editar los datos del libro
+    }
+
+
     // Método para asignar el adaptador al RecyclerView en el MainActivity
     fun setAdapter() {
         val myActivity = context as MainActivity
-
-        // Asignar el adaptador con la lista de libros al RecyclerView
-        myActivity.findViewById<RecyclerView>(R.id.my_recycler_view).adapter = BookAdapter(listBooks)
+        myActivity.binding.myRecyclerView.adapter = BookAdapter(
+            listBooks,
+            { pos -> deleteBook(pos) }, // Llama a delBook cuando se pulse el botón de eliminar
+            { pos -> updateBook(pos) } // Llama a updateBook cuando se pulse el botón de actualizar
+        )
     }
 }

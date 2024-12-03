@@ -10,12 +10,6 @@ import androidx.appcompat.app.AppCompatActivity
 
 class LoginActivity : AppCompatActivity() {
 
-    // Constantes estáticas de usuario y contraseña para validación del login
-    companion object {
-        const val MYUSER = "AnaVazquez"
-        const val MYPASS = "root"
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
@@ -25,44 +19,70 @@ class LoginActivity : AppCompatActivity() {
         val passwordEditText = findViewById<EditText>(R.id.passwordEditText)
         val loginButton = findViewById<Button>(R.id.loginButton)
 
+        // Obtener desde strings.xml los valores de usuario y contraseña
+        val storedUsername = getString(R.string.username)
+        val storedPassword = getString(R.string.password)
+
         // Configurar el botón de login
         loginButton.setOnClickListener {
-            val username = usernameEditText.text.toString().trim() // elimina los espacios
+            val username = usernameEditText.text.toString().trim()
             val password = passwordEditText.text.toString().trim()
 
-            when {
-                // Comprobación si los campos están vacíos
-                username.isEmpty() || password.isEmpty() -> {
-                    Toast.makeText(
-                        this,
-                        "Introduce un nombre de usuario y una contraseña",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                }
+            // método para el manejo del login
+            handleLogin(username, password, storedUsername, storedPassword, usernameEditText, passwordEditText)
+        }
+    }
 
-                // Comprobación si el usuario es incorrecto
-                username != MYUSER -> {
-                    Toast.makeText(this, "Usuario incorrecto", Toast.LENGTH_SHORT).show()
-                }
-
-                // Comprobación si la contraseña es incorrecta
-                password != MYPASS -> {
-                    Toast.makeText(this, "Contraseña incorrecta", Toast.LENGTH_SHORT).show()
-                }
-
-                // Comprobación si ambas credenciales son correctas
-                username == MYUSER && password == MYPASS -> {
-                    val intent = Intent(this, MainActivity::class.java)
-                    intent.putExtra("USERNAME", username) // Pasa el nombre de usuario
-                    startActivity(intent)
-                    finish() // Finaliza LoginActivity
-                }
-
-                // Si se produce algún otro error con las credenciales
-                else -> {
-                    Toast.makeText(this, "Error en las credenciales", Toast.LENGTH_SHORT).show()
-                }
+    /**
+     * Maneja el inicio de sesión. Recibe el nombre de usuario, contraseña introducidos en el editText,
+     * y los válida comparandolos con los valores almacenados en string.xml. Si la validación falla,
+     * muestra un mensaje de error.
+     */
+    private fun handleLogin(
+        username: String,
+        password: String,
+        storedUsername: String,
+        storedPassword: String,
+        usernameEditText: EditText,
+        passwordEditText: EditText
+    ) {
+        when {
+            username.isEmpty() -> {
+                usernameEditText.error = getString(R.string.error_empty_username)
+                usernameEditText.requestFocus() // Muestra el cursor en el campo de usuario
+            }
+            password.isEmpty() -> {
+                passwordEditText.error = getString(R.string.error_empty_password)
+                passwordEditText.requestFocus() // Muestra el cursor en el campo de contraseña
+            }
+            username != storedUsername -> {
+                showToast(getString(R.string.error_invalid_username))
+            }
+            password != storedPassword -> {
+                showToast(getString(R.string.error_invalid_password))
+            }
+            else -> {
+                navigateToMainActivity(username) // Si la validación es correcta pasa a la pantalla principal
             }
         }
     }
+
+    /**
+     * Muestra un mensaje toast
+     */
+    private fun showToast(message: String) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+    }
+
+    /**
+     * Navega a la actividad principal de la aplicación.
+     */
+    private fun navigateToMainActivity(username: String) {
+        val intent = Intent(this, MainActivity::class.java).apply {
+            putExtra("USERNAME", username)
+        }
+        startActivity(intent)
+        finish()
+    }
 }
+
