@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
+
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/poppins_bold"
+        android:orientation="vertical"
+        android:padding="16dp"
+        >
+
+        <!-- Título del libro -->
+        <EditText
+            android:id="@+id/editTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/poppins_regular"
+            android:layout_marginBottom="20dp"
+            android:padding="14dp"
+            android:hint="Título del libro"
+            android:background="@drawable/rounded_background_edtittext"
+            android:inputType="text" />
+
+        <!-- Autor -->
+        <EditText
+            android:id="@+id/editAuthor"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:fontFamily="@font/poppins_regular"
+            android:padding="14dp"
+            android:hint="Autor"
+            android:background="@drawable/rounded_background_edtittext"
+            android:inputType="text" />
+
+        <!-- Año -->
+        <EditText
+            android:id="@+id/editYear"
+            android:layout_width="match_parent"
+            android:fontFamily="@font/poppins_regular"
+            android:padding="14dp"
+            android:layout_marginBottom="20dp"
+            android:background="@drawable/rounded_background_edtittext"
+            android:layout_height="wrap_content"
+            android:hint="Año de publicación"
+            android:inputType="number" />
+
+        <!-- Género -->
+        <EditText
+            android:id="@+id/editGenre"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Género"
+            android:layout_marginBottom="20dp"
+            android:fontFamily="@font/poppins_regular"
+            android:padding="14dp"
+            android:background="@drawable/rounded_background_edtittext"
+            android:inputType="text" />
+
+        <!-- URL de portada (opcional) -->
+        <EditText
+            android:id="@+id/editCoverUrl"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/poppins_regular"
+            android:padding="14dp"
+            android:background="@drawable/rounded_background_edtittext"
+            android:hint="URL de la portada (opcional)"
+            android:inputType="textUri" />
+
+        <ImageView
+            android:id="@+id/bookCover"
+            android:layout_width="90dp"
+            android:layout_height="130dp"
+            android:layout_marginBottom="20dp"
+            android:scaleType="centerCrop"
+            android:contentDescription="Imagen de portada del libro"
+            android:src="@drawable/ic_placeholder" />
+    </LinearLayout>
+</ScrollView>
