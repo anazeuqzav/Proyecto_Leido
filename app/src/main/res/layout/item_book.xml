@@ -4,10 +4,12 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="4dp"
+    app:cardElevation="4dp"
+    android:outlineSpotShadowColor="#FACAE2"
     android:backgroundTint="@color/md_theme_backgroundPink"
+    app:strokeColor="#FACAE2"
     app:cardCornerRadius="16dp"
-    app:strokeColor="@color/md_theme_primary"
-    app:strokeWidth="1dp">
+    >
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"

@@ -14,4 +14,16 @@
         android:layout_height="wrap_content"
         android:padding="25dp" />
 
+    <!-- Botón flotante -->
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab_add"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="16dp"
+        android:src="@drawable/baseline_add_24"
+        android:background="@drawable/round_button"
+        android:contentDescription="Añadir libro"
+         />
+
 </FrameLayout>

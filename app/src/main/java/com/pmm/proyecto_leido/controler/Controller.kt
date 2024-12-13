@@ -7,6 +7,7 @@ import com.pmm.proyecto_leido.MainActivity
 import com.pmm.proyecto_leido.R
 import com.pmm.proyecto_leido.adapter.BookAdapter
 import com.pmm.proyecto_leido.dao.DaoBooks
+import com.pmm.proyecto_leido.dialogues.DialogEditBook
 import com.pmm.proyecto_leido.models.Book
 
 class Controller(val context: Context) {
@@ -36,17 +37,39 @@ class Controller(val context: Context) {
     }
 
     // Método para eliminar un libro dado su posición
-    private fun deleteBook(position: Int) {
+    fun deleteBook(position: Int) {
         val removedBook = listBooks.removeAt(position)
         Toast.makeText(context, "Eliminado: ${removedBook.title}", Toast.LENGTH_SHORT).show()
         setAdapter() // Refresca el adaptador
     }
 
+    // Método para manejar la llamada desde el diálogo de eliminación
+    fun onDeleteBookDialog(position: Int) {
+        deleteBook(position)  // Llamamos a la función de eliminar el libro
+    }
 
-    private fun updateBook(position: Int) {
+    // Método para editar un libro
+    fun updateBook(position: Int) {
         val bookToUpdate = listBooks[position]
-        Toast.makeText(context, "Actualizar: ${bookToUpdate.title}", Toast.LENGTH_SHORT).show()
-        // Aquí podrías abrir un diálogo o actividad para editar los datos del libro
+        val editDialog = DialogEditBook(bookToUpdate) { updatedBook ->
+            okOnEditBook(updatedBook, position)
+        }
+        val myActivity = context as MainActivity
+        editDialog.show(myActivity.supportFragmentManager, "EditBookDialog")
+    }
+
+    private fun okOnEditBook(updatedBook: Book, position: Int) {
+        // Actualiza el libro en la posición correspondiente
+        listBooks[position] = updatedBook
+        val adapter = (context as MainActivity).binding.myRecyclerView.adapter as BookAdapter
+        adapter.notifyItemChanged(position) // Notificar el cambio en el RecyclerView
+    }
+
+
+    // Método para añadir un libro
+    fun addBook(newBook: Book) {
+        listBooks.add(newBook) // Añadir el libro a la lista
+        Toast.makeText(context, "Libro añadido: ${newBook.title}", Toast.LENGTH_SHORT).show()
     }
 
 

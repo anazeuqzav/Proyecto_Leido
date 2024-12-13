@@ -3,6 +3,7 @@ package com.pmm.proyecto_leido.adapter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.pmm.proyecto_leido.R
@@ -36,5 +37,18 @@ class BookAdapter(
 
     override fun getItemCount(): Int = listBooks.size
 
+    // Método para agregar un libro
+    fun addBook(newBook: Book) {
+        listBooks.add(newBook) // Añadir el libro a la lista
+        notifyItemInserted(listBooks.size - 1) // Notificar que se ha insertado un nuevo ítem
+    }
+
+    fun updateCoverImage(book: Book, imageView: ImageView) {
+        Glide.with(imageView.context)
+            .load(book.cover) // Cargar la imagen desde la URL de la portada
+            .centerCrop()
+            .placeholder(R.drawable.ic_placeholder)
+            .into(imageView)
+    }
 
 }

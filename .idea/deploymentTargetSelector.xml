@@ -15,7 +15,7 @@
       </SelectionState>
       <SelectionState runConfigName="LoginActivity">
         <option name="selectionMode" value="DROPDOWN" />
-        <DropdownSelection timestamp="2024-11-29T18:32:04.783260100Z">
+        <DropdownSelection timestamp="2024-12-05T14:01:24.116762900Z">
           <Target type="DEFAULT_BOOT">
             <handle>
               <DeviceId pluginId="LocalEmulator" identifier="path=C:\Users\tarde\.android\avd\Pixel_4_API_30.avd" />

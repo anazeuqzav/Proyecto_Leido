@@ -3,6 +3,7 @@ package com.pmm.proyecto_leido.adapter
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.pmm.proyecto_leido.MainActivity
 import com.pmm.proyecto_leido.R
 import com.pmm.proyecto_leido.databinding.ItemBookBinding
 import com.pmm.proyecto_leido.models.Book
@@ -29,12 +30,20 @@ class BookViewHolder(view: View,
             .placeholder(R.drawable.ic_placeholder) // Imagen por defecto mientras carga
             .into(binding.bookCover) // Elemento ImageView donde se muestra
 
+        // Configurar los listeners
+        setOnClickListener(position)
+    }
+
+    // Configura los listeners para los botones de editar y eliminar
+    private fun setOnClickListener(position: Int) {
+        // Configurar el listener para el botón de eliminar
         binding.deleteButton.setOnClickListener {
-            deleteOnClick(position)
+            // Llamar al método para mostrar el diálogo de eliminación
+            (itemView.context as MainActivity).showDeleteDialog(adapterPosition) // Muestra el diálogo de eliminación
+        }
+        binding.updateButton.setOnClickListener {
+            updateOnClick(position) // Llama a la función lambda de actualizar
         }
 
-        binding.updateButton.setOnClickListener {
-            updateOnClick(position)
-        }
     }
 }

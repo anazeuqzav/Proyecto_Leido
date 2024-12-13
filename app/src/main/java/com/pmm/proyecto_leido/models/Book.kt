@@ -5,7 +5,7 @@ class Book (
     var author: String,
     var year: Int,
     var genrer: String,
-    var cover: Int
+    var cover: String
 ) {
     override fun toString(): String {
         return "Book(title='$title', author='$author', year='$year', genrer='$genrer')"
