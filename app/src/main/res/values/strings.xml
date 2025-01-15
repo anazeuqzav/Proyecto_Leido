@@ -8,4 +8,6 @@
     <string name="error_empty_password">El campo de contraseña no puede estar vacío</string>
     <string name="error_invalid_username">Usuario no registrado</string>
     <string name="error_invalid_password">Contraseña incorrecta</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

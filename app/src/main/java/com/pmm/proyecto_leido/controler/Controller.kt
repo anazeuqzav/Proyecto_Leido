@@ -26,6 +26,16 @@ class Controller(val context: Context) {
         listBooks = DaoBooks.myDao.getDataBook().toMutableList()
     }
 
+    // Configurar el adaptador para el RecyclerView
+    fun setAdapter(recyclerView: RecyclerView) {
+        val adapter = BookAdapter(
+            listBooks,
+            { pos -> deleteBook(pos, recyclerView) },
+            { pos -> updateBook(pos, recyclerView) }
+        )
+        recyclerView.adapter = adapter
+    }
+
     // Método para hacer logout o simplemente mostrar un Toast con los libros
     fun loggOut() {
         Toast.makeText(context, "He mostrado los datos en pantalla", Toast.LENGTH_LONG).show()
@@ -37,49 +47,29 @@ class Controller(val context: Context) {
     }
 
     // Método para eliminar un libro dado su posición
-    fun deleteBook(position: Int) {
-        val removedBook = listBooks.removeAt(position)
-        Toast.makeText(context, "Eliminado: ${removedBook.title}", Toast.LENGTH_SHORT).show()
-        setAdapter() // Refresca el adaptador
+    fun deleteBook(position: Int, recyclerView: RecyclerView) {
+        listBooks.removeAt(position)
+        recyclerView.adapter?.notifyItemRemoved(position)
+        Toast.makeText(context, "Libro eliminado", Toast.LENGTH_SHORT).show()
     }
 
-    // Método para manejar la llamada desde el diálogo de eliminación
-    fun onDeleteBookDialog(position: Int) {
-        deleteBook(position)  // Llamamos a la función de eliminar el libro
-    }
 
     // Método para editar un libro
-    fun updateBook(position: Int) {
+    fun updateBook(position: Int, recyclerView: RecyclerView) {
         val bookToUpdate = listBooks[position]
         val editDialog = DialogEditBook(bookToUpdate) { updatedBook ->
-            okOnEditBook(updatedBook, position)
+            listBooks[position] = updatedBook
+            recyclerView.adapter?.notifyItemChanged(position)
         }
-        val myActivity = context as MainActivity
-        editDialog.show(myActivity.supportFragmentManager, "EditBookDialog")
-    }
-
-    private fun okOnEditBook(updatedBook: Book, position: Int) {
-        // Actualiza el libro en la posición correspondiente
-        listBooks[position] = updatedBook
-        val adapter = (context as MainActivity).binding.myRecyclerView.adapter as BookAdapter
-        adapter.notifyItemChanged(position) // Notificar el cambio en el RecyclerView
+        val activity = context as MainActivity
+        editDialog.show(activity.supportFragmentManager, "EditBookDialog")
     }
 
 
     // Método para añadir un libro
-    fun addBook(newBook: Book) {
-        listBooks.add(newBook) // Añadir el libro a la lista
+    fun addBook(newBook: Book, recyclerView: RecyclerView) {
+        listBooks.add(newBook)
+        recyclerView.adapter?.notifyItemInserted(listBooks.lastIndex)
         Toast.makeText(context, "Libro añadido: ${newBook.title}", Toast.LENGTH_SHORT).show()
-    }
-
-
-    // Método para asignar el adaptador al RecyclerView en el MainActivity
-    fun setAdapter() {
-        val myActivity = context as MainActivity
-        myActivity.binding.myRecyclerView.adapter = BookAdapter(
-            listBooks,
-            { pos -> deleteBook(pos) }, // Llama a delBook cuando se pulse el botón de eliminar
-            { pos -> updateBook(pos) } // Llama a updateBook cuando se pulse el botón de actualizar
-        )
     }
 }

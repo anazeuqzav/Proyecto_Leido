@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn = "navigation_view">
+
+    <group android:checkableBehavior="single">
+        <item android:title="Books I've already read"
+            android:id="@+id/fragmentBooksRead"
+            android:icon="@drawable/baseline_bookmark_24"
+            />
+        <item android:title="Books I want to read"
+            android:id="@+id/fragmentBooksToRead"
+            android:icon="@drawable/baseline_bookmarks_24"
+            />
+        <item android:title="My favourite books"
+            android:id="@+id/fragmentFavouritesBooks"
+            android:icon="@drawable/baseline_star_24"
+            />
+    </group>
+    <item android:title="" >
+        <menu >
+            <item
+                android:title="Logout"
+                android:icon="@drawable/baseline_logout_24"
+                />
+        </menu>
+    </item>
+</menu>

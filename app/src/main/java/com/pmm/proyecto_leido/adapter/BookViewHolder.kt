@@ -39,7 +39,7 @@ class BookViewHolder(view: View,
         // Configurar el listener para el botón de eliminar
         binding.deleteButton.setOnClickListener {
             // Llamar al método para mostrar el diálogo de eliminación
-            (itemView.context as MainActivity).showDeleteDialog(adapterPosition) // Muestra el diálogo de eliminación
+            (itemView.context as MainActivity).showDeleteDialog(adapterPosition) //da error el método showDeleteDialog
         }
         binding.updateButton.setOnClickListener {
             updateOnClick(position) // Llama a la función lambda de actualizar

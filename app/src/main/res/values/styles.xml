@@ -5,4 +5,9 @@
         <item name="cornerFamily">rounded</item>  <!-- Establece esquinas redondeadas -->
         <item name="cornerSize">16dp</item>  <!-- Tamaño del radio de las esquinas -->
     </style>
+
+    <style name="RoundedImage" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">20%</item> <!-- Esto crea un círculo -->
+    </style>
 </resources>
