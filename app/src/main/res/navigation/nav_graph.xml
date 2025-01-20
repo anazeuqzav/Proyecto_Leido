@@ -8,16 +8,16 @@
     <fragment
         android:id="@+id/fragmentBooksRead"
         android:name="com.pmm.proyecto_leido.fragments.FragmentBooksRead"
-        android:label="fragment_books_read"
+        android:label="Books I've already read"
         tools:layout="@layout/fragment_books_read" />
     <fragment
         android:id="@+id/fragmentBooksToRead"
         android:name="com.pmm.proyecto_leido.fragments.FragmentBooksToRead"
-        android:label="fragment_books_to_read"
+        android:label="Books I want to read"
         tools:layout="@layout/fragment_books_to_read" />
     <fragment
         android:id="@+id/fragmentFavouritesBooks"
         android:name="com.pmm.proyecto_leido.fragments.FragmentFavouriteBooks"
-        android:label="fragment_favourite_books"
+        android:label="Favorite Books"
         tools:layout="@layout/fragment_favourite_books" />
 </navigation>

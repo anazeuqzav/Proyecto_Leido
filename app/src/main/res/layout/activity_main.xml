@@ -22,7 +22,10 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="start"
+        app:itemTextColor="@color/selector_drawer_item_text_appearance"
+        app:itemTextAppearance="@style/DrawerItemTextNormal"
         app:menu="@menu/nav_menu_extend"
+        android:theme="@style/AppTheme"
         app:headerLayout="@layout/nav_header_main"
         android:fitsSystemWindows="true" />
 

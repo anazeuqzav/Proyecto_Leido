@@ -10,15 +10,19 @@
         android:id="@+id/appBarMain"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:theme="@style/AppTheme"
+        android:textColor="#FF5722"
         >
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            app:titleTextColor="?attr/colorOnPrimary"
+            app:menu="@menu/toolbar_op"
+            android:theme="@style/ToolbarTheme"
             app:popupTheme="@style/AppTheme"
-             />
+            />
     </com.google.android.material.appbar.AppBarLayout>
 
     <!-- Contenido Principal -->
@@ -28,6 +32,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior" />
+
     <!-- Botón flotante -->
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab_add"

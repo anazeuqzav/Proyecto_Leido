@@ -9,6 +9,12 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:fontFamily="@font/poppins_regular"
+        android:textSize="25sp"
+        android:textColor="@color/md_theme_primary"
+        android:textAlignment="center"
+        android:gravity="center"
+        android:text="Aquí se mostrará la lista de libros favoritos" />
+    />
 
 </FrameLayout>

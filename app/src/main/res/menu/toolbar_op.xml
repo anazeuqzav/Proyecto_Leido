@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/toolbar">
+    <item
+        android:id="@+id/fragmentBooksRead"
+        android:icon="@drawable/baseline_bookmark_24"
+        android:title="Books I've already read"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/fragmentBooksToRead"
+        android:icon="@drawable/baseline_bookmark_border_24"
+        android:title="Books I want to read"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/fragmentFavouritesBooks"
+        android:icon="@drawable/baseline_star_24"
+        android:title="Favorites Books"
+        app:showAsAction="ifRoom" />
+
+</menu>

@@ -10,4 +10,27 @@
         <item name="cornerFamily">rounded</item>
         <item name="cornerSize">20%</item> <!-- Esto crea un círculo -->
     </style>
+
+    <!--Estilo para el texto de navigation drawer-->
+    <style name="DrawerItemTextNormal" parent="TextAppearance.MaterialComponents.Body1">
+        <item name="android:fontFamily">@font/poppins_regular</item>
+    </style>
+
+    <style name="DrawerItemTextSelected" parent="TextAppearance.MaterialComponents.Body1">
+        <item name="android:fontFamily">@font/poppins_bold</item>
+    </style>
+
+    <!--Estilo para la letra de la app bar-->
+    <style name="ToolbarTheme" parent="ThemeOverlay.AppCompat.Light">
+        <item name="android:fontFamily">@font/poppins_bold</item>
+        <item name="android:textSize">15sp</item>
+    </style>
+
+    <!--Estilo para cambiar la hamburgesa-->
+    <style name="DrawerArrowStyle" parent="@style/Widget.AppCompat.DrawerArrowToggle">
+        <item name="spinBars">true</item>
+        <item name="color">@color/md_theme_buttonPink</item>
+    </style>
+
+
 </resources>

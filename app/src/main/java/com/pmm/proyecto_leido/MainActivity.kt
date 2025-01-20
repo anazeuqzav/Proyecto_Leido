@@ -6,6 +6,7 @@ import android.view.MenuItem
 import android.widget.Button
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
@@ -30,6 +31,7 @@ class MainActivity : AppCompatActivity() {
     lateinit var controller: Controller
 
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -38,44 +40,43 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         // Inicializar el controlador y configurarlo
-        // Llamamos al método init() que configura RecyclerView y el controlador
         controller = Controller(context = this)
 
         // Configurar Toolbar y Navigation Drawer
         setupNavigationDrawer()
 
-        // Configurar elementos adicionales si es necesario
-        setupFloatingActionButton()
-
         // Configurar el botón flotante para agregar un libro
         binding.appBarLayoutDrawer.fabAdd.setOnClickListener {
-            // Abrir un fragmento o diálogo para capturar los datos del nuevo libro
             openAddBookDialog()
         }
     }
 
 
-
     private fun setupNavigationDrawer() {
+
         // Obtener NavHostFragment y NavController
-        val navHostFragment =
-            supportFragmentManager.findFragmentById(R.id.fragmentContainerView) as NavHostFragment
+        val navHostFragment = supportFragmentManager.findFragmentById(R.id.fragmentContainerView) as NavHostFragment
         navController = navHostFragment.navController
+        val toolbar = binding.appBarLayoutDrawer.toolbar
+        toolbar.navigationIcon?.setTint(ContextCompat.getColor(this, R.color.md_theme_onPrimary))
+
 
         // Configurar destinos principales (top-level destinations)
         appBarConfiguration = AppBarConfiguration(
             setOf(R.id.fragmentBooksRead, R.id.fragmentBooksToRead, R.id.fragmentFavouritesBooks),
             binding.drawerLayout
         )
+        setSupportActionBar(toolbar)
+
 
         // Vincular Toolbar con NavController
-        setSupportActionBar(binding.appBarLayoutDrawer.toolbar)
         setupActionBarWithNavController(navController, appBarConfiguration)
 
         // Vincular NavigationView con NavController
         binding.navigationView.setupWithNavController(navController)
     }
 
+    /*
     private fun setupFloatingActionButton() {
         binding.appBarLayoutDrawer.fabAdd.setOnClickListener {
             val currentFragment =
@@ -87,17 +88,17 @@ class MainActivity : AppCompatActivity() {
                 dialog.show(supportFragmentManager, "DialogNewBook")
             }
         }
-    }
+    }*/
 
     override fun onSupportNavigateUp(): Boolean {
         return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
     }
 
-    /*
+
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.toolbar_op, menu)
         return true
-    }*/
+    }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {

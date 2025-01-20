@@ -78,4 +78,5 @@ dependencies {
     debugImplementation(libs.androidx.ui.test.manifest)
     implementation(libs.glide)
     annotationProcessor(libs.compiler)
+    implementation(kotlin("script-runtime"))
 }
