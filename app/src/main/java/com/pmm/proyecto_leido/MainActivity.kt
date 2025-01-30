@@ -30,8 +30,6 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     lateinit var controller: Controller
 
-
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -60,14 +58,12 @@ class MainActivity : AppCompatActivity() {
         val toolbar = binding.appBarLayoutDrawer.toolbar
         toolbar.navigationIcon?.setTint(ContextCompat.getColor(this, R.color.md_theme_onPrimary))
 
-
         // Configurar destinos principales (top-level destinations)
         appBarConfiguration = AppBarConfiguration(
             setOf(R.id.fragmentBooksRead, R.id.fragmentBooksToRead, R.id.fragmentFavouritesBooks),
             binding.drawerLayout
         )
         setSupportActionBar(toolbar)
-
 
         // Vincular Toolbar con NavController
         setupActionBarWithNavController(navController, appBarConfiguration)
@@ -76,19 +72,6 @@ class MainActivity : AppCompatActivity() {
         binding.navigationView.setupWithNavController(navController)
     }
 
-    /*
-    private fun setupFloatingActionButton() {
-        binding.appBarLayoutDrawer.fabAdd.setOnClickListener {
-            val currentFragment =
-                supportFragmentManager.findFragmentById(R.id.fragmentContainerView)
-            if (currentFragment is FragmentBooksRead) {
-                val dialog = DialogNewBook { newBook ->
-                    currentFragment.addBook(newBook)
-                }
-                dialog.show(supportFragmentManager, "DialogNewBook")
-            }
-        }
-    }*/
 
     override fun onSupportNavigateUp(): Boolean {
         return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
@@ -124,7 +107,7 @@ class MainActivity : AppCompatActivity() {
     fun showDeleteDialog(position: Int) {
         val bookName = controller.listBooks[position].title
         val deleteDialog = DialogDeleteBook(position, bookName) { pos ->
-            // Obtén el NavHostFragment y el fragmento activo
+            // Obtiene el NavHostFragment y el fragmento activo
             val navHostFragment =
                 supportFragmentManager.findFragmentById(R.id.fragmentContainerView) as? NavHostFragment
             val currentFragment = navHostFragment?.childFragmentManager?.fragments?.get(0)

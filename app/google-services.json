@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "289399180871",
+    "project_id": "leido-9600f",
+    "storage_bucket": "leido-9600f.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:289399180871:android:25c327a45bf77bd76c2b62",
+        "android_client_info": {
+          "package_name": "com.pmm.proyecto_leido"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBW6Bcnh-l1zcXLSXjZRZ_8BPdDeo_6QZQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
