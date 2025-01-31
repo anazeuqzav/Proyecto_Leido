@@ -1,74 +1,121 @@
 package com.pmm.proyecto_leido
 
+
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
+import android.widget.TextView
 import android.widget.Toast
-
 import androidx.appcompat.app.AppCompatActivity
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
+import com.google.firebase.auth.FirebaseAuthInvalidUserException
 
 class LoginActivity : AppCompatActivity() {
+
+    private lateinit var auth: FirebaseAuth
+    private lateinit var emailEditText: EditText
+    private lateinit var passwordEditText: EditText
+    private lateinit var loginButton: Button
+    private lateinit var registerButton: TextView
+    private lateinit var recoverPasswordButton: TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
+        // Inicializar Firebase Auth
+        auth = FirebaseAuth.getInstance()
+
         // Referencias a los elementos del layout
-        val usernameEditText = findViewById<EditText>(R.id.usernameEditText)
-        val passwordEditText = findViewById<EditText>(R.id.passwordEditText)
-        val loginButton = findViewById<Button>(R.id.loginButton)
+        emailEditText = findViewById(R.id.usernameEditText)
+        passwordEditText = findViewById(R.id.passwordEditText)
+        loginButton = findViewById(R.id.loginButton)
+        registerButton = findViewById(R.id.registerButton)
+        recoverPasswordButton = findViewById(R.id.recoverPasswordButton)
 
-        // Obtener desde strings.xml los valores de usuario y contraseña
-        val storedUsername = getString(R.string.username)
-        val storedPassword = getString(R.string.password)
-
-        // Configurar el botón de login
+        // Configurar botones
         loginButton.setOnClickListener {
-            val username = usernameEditText.text.toString().trim()
+            val email = emailEditText.text.toString().trim()
             val password = passwordEditText.text.toString().trim()
+            handleLogin(email, password)
+        }
 
-            // método para el manejo del login
-            handleLogin(username, password, storedUsername, storedPassword, usernameEditText, passwordEditText)
+        registerButton.setOnClickListener {
+            startActivity(Intent(this, RegisterActivity::class.java))
+        }
+
+        recoverPasswordButton.setOnClickListener {
+            val email = emailEditText.text.toString().trim()
+            if (email.isNotEmpty()) {
+                recoverPassword(email)
+            } else {
+                showToast("Por favor, ingresa tu correo electrónico.")
+            }
         }
     }
 
     /**
-     * Maneja el inicio de sesión. Recibe el nombre de usuario, contraseña introducidos en el editText,
-     * y los válida comparandolos con los valores almacenados en string.xml. Si la validación falla,
-     * muestra un mensaje de error.
+     * Maneja el inicio de sesión con Firebase Authentication.
      */
-    private fun handleLogin(
-        username: String,
-        password: String,
-        storedUsername: String,
-        storedPassword: String,
-        usernameEditText: EditText,
-        passwordEditText: EditText
-    ) {
+    private fun handleLogin(email: String, password: String) {
         when {
-            username.isEmpty() -> {
-                usernameEditText.error = getString(R.string.error_empty_username)
-                usernameEditText.requestFocus() // Muestra el cursor en el campo de usuario
+            email.isEmpty() -> {
+                emailEditText.error = "El correo electrónico no puede estar vacío"
+                emailEditText.requestFocus()
             }
             password.isEmpty() -> {
-                passwordEditText.error = getString(R.string.error_empty_password)
-                passwordEditText.requestFocus() // Muestra el cursor en el campo de contraseña
-            }
-            username != storedUsername -> {
-                showToast(getString(R.string.error_invalid_username))
-            }
-            password != storedPassword -> {
-                showToast(getString(R.string.error_invalid_password))
+                passwordEditText.error = "La contraseña no puede estar vacía"
+                passwordEditText.requestFocus()
             }
             else -> {
-                navigateToMainActivity(username) // Si la validación es correcta pasa a la pantalla principal
+                auth.signInWithEmailAndPassword(email, password)
+                    .addOnCompleteListener { task ->
+                        if (task.isSuccessful) {
+                            val user = auth.currentUser
+                            if (user?.isEmailVerified == true) {
+                                navigateToMainActivity()
+                            } else {
+                                auth.signOut()
+                                showToast("Debes verificar tu correo antes de iniciar sesión.")
+                            }
+                        } else {
+                            handleAuthError(task.exception)
+                        }
+                    }
             }
         }
     }
 
     /**
-     * Muestra un mensaje toast
+     * Maneja los errores de autenticación en Firebase.
+     */
+    private fun handleAuthError(exception: Exception?) {
+        val message = when (exception) {
+            is FirebaseAuthInvalidUserException -> "El usuario no existe o ha sido deshabilitado."
+            is FirebaseAuthInvalidCredentialsException -> "Correo o contraseña incorrectos."
+            else -> exception?.message ?: "Error desconocido"
+        }
+        showToast(message)
+    }
+
+    /**
+     * Envia un correo para recuperar la contraseña.
+     */
+    private fun recoverPassword(email: String) {
+        auth.sendPasswordResetEmail(email)
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    showToast("Se ha enviado un correo para restablecer tu contraseña.")
+                } else {
+                    showToast("Error al enviar el correo. Verifica que el email sea correcto.")
+                }
+            }
+    }
+
+    /**
+     * Muestra un mensaje toast.
      */
     private fun showToast(message: String) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
@@ -77,10 +124,8 @@ class LoginActivity : AppCompatActivity() {
     /**
      * Navega a la actividad principal de la aplicación.
      */
-    private fun navigateToMainActivity(username: String) {
-        val intent = Intent(this, MainActivity::class.java).apply {
-            putExtra("USERNAME", username)
-        }
+    private fun navigateToMainActivity() {
+        val intent = Intent(this, MainActivity::class.java)
         startActivity(intent)
         finish()
     }

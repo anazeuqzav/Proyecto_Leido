@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Button
 import android.widget.EditText
+import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -21,15 +22,13 @@ import com.google.firebase.auth.auth
 class RegisterActivity: AppCompatActivity() {
 
     private lateinit var btnRegister : Button
-    private lateinit var btnLastRegister : Button
+    private lateinit var btnLastRegister : TextView
     private lateinit var editUser : EditText
     private lateinit var editPassword : EditText
     private lateinit var editRepeatPassword : EditText
     private lateinit var auth : FirebaseAuth  //para autenticarme en firebase
 
     //pruebasdam24.a@gmail.com
-
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -115,9 +114,9 @@ class RegisterActivity: AppCompatActivity() {
                                 taskVerification ->
                             var msg = ""
                             if (taskVerification.isSuccessful)
-                                msg = "Usuario Registrado Ok. Verifique su correo"
+                                msg = "Usuario Registrado. Verifique su correo"
                             else
-                                msg = "Usuario Registrado Ok. ${taskVerification.exception?.message}"
+                                msg = "Usuario Registrado. ${taskVerification.exception?.message}"
                             auth.signOut() //tiene que verificar antes el email
                             onResult(true, msg)
                         }

@@ -42,7 +42,8 @@ android {
         viewBinding = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.1"
+        kotlinCompilerExtensionVersion = "1.5.10" // En lugar de "1.5.4"
+
     }
     packaging {
         resources {
@@ -80,7 +81,8 @@ dependencies {
     implementation(libs.glide)
     annotationProcessor(libs.compiler)
     implementation(kotlin("script-runtime"))
-    implementation(platform("com.google.firebase:firebase-bom:33.8.0"))
+    implementation(platform("com.google.firebase:firebase-bom:33.1.0")) // O una versión más baja compatible
     implementation("com.google.firebase:firebase-analytics")
     implementation("com.google.firebase:firebase-auth")
+
 }

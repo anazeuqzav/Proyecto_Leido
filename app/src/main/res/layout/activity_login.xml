@@ -108,22 +108,26 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <TextView
-                android:id="@+id/forgotPassword"
+                android:id="@+id/recoverPasswordButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/poppins_regular"
                 android:text="Forgotten your password?"
                 android:textAlignment="center"
+                android:clickable="true"
+                android:focusable="true"
                 android:textColor="@color/selector_text_link"
                 android:textSize="12sp" />
 
             <TextView
-                android:id="@+id/register"
+                android:id="@+id/registerButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="20dp"
                 android:fontFamily="@font/poppins_regular"
                 android:text="Create an account"
+                android:clickable="true"
+                android:focusable="true"
                 android:textAlignment="center"
                 android:textColor="@color/selector_text_link"
                 android:textSize="12sp" />
