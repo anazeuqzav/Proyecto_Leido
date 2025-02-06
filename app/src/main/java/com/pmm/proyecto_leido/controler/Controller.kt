@@ -36,15 +36,6 @@ class Controller(val context: Context) {
         recyclerView.adapter = adapter
     }
 
-    // Método para hacer logout o simplemente mostrar un Toast con los libros
-    fun loggOut() {
-        Toast.makeText(context, "He mostrado los datos en pantalla", Toast.LENGTH_LONG).show()
-
-        // Mostrar los libros en consola
-        listBooks.forEach {
-            println(it)
-        }
-    }
 
     // Método para eliminar un libro dado su posición
     fun deleteBook(position: Int, recyclerView: RecyclerView) {

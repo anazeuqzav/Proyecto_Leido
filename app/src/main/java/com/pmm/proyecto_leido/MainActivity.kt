@@ -1,25 +1,26 @@
 package com.pmm.proyecto_leido
 
+import android.content.Context
+import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
-import android.widget.Button
-import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide.init
+import com.google.firebase.auth.FirebaseAuth
+import com.pmm.proyecto_leido.LoginActivity.Global
 import com.pmm.proyecto_leido.controler.Controller
 import com.pmm.proyecto_leido.databinding.ActivityMainBinding
 import com.pmm.proyecto_leido.dialogues.DialogDeleteBook
-import com.pmm.proyecto_leido.dialogues.DialogEditBook
 import com.pmm.proyecto_leido.dialogues.DialogNewBook
 import com.pmm.proyecto_leido.fragments.FragmentBooksRead
 
@@ -28,7 +29,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var navController: NavController
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityMainBinding
-    lateinit var controller: Controller
+    private val controller: Controller by lazy { Controller(context = this) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,9 +37,6 @@ class MainActivity : AppCompatActivity() {
         // Inicializa ViewBinding
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
-        // Inicializar el controlador y configurarlo
-        controller = Controller(context = this)
 
         // Configurar Toolbar y Navigation Drawer
         setupNavigationDrawer()
@@ -49,98 +47,82 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-
     private fun setupNavigationDrawer() {
-
-        // Obtener NavHostFragment y NavController
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.fragmentContainerView) as NavHostFragment
         navController = navHostFragment.navController
         val toolbar = binding.appBarLayoutDrawer.toolbar
-        toolbar.navigationIcon?.setTint(ContextCompat.getColor(this, R.color.md_theme_onPrimary))
 
-        // Configurar destinos principales (top-level destinations)
+        // Configurar el color del icono de navegación
+        toolbar.post {
+            toolbar.navigationIcon?.setTint(ContextCompat.getColor(this, R.color.md_theme_onPrimary))
+        }
+
+        // Configurar destinos principales
         appBarConfiguration = AppBarConfiguration(
             setOf(R.id.fragmentBooksRead, R.id.fragmentBooksToRead, R.id.fragmentFavouritesBooks),
             binding.drawerLayout
         )
+
         setSupportActionBar(toolbar)
-
-        // Vincular Toolbar con NavController
         setupActionBarWithNavController(navController, appBarConfiguration)
-
-        // Vincular NavigationView con NavController
         binding.navigationView.setupWithNavController(navController)
-    }
 
+        // **Interceptar clics en el menú**
+        binding.navigationView.setNavigationItemSelectedListener { item ->
+            when (item.itemId) {
+                R.id.logout -> {
+                    logout()
+                    true
+                }
+                else -> {
+                    NavigationUI.onNavDestinationSelected(item, navController) || super.onOptionsItemSelected(item)
+                }
+            }
+        }
+    }
 
     override fun onSupportNavigateUp(): Boolean {
         return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
     }
-
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.toolbar_op, menu)
         return true
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId) {
-            R.id.fragmentBooksRead -> {
-                navController.navigate(R.id.fragmentBooksRead)
-                true
-            }
-
-            R.id.fragmentBooksToRead -> {
-                navController.navigate(R.id.fragmentBooksToRead)
-                true
-            }
-
-            R.id.fragmentFavouritesBooks -> {
-                navController.navigate(R.id.fragmentFavouritesBooks)
-                true
-            }
-
-            else -> super.onOptionsItemSelected(item)
-        }
-    }
 
     fun showDeleteDialog(position: Int) {
         val bookName = controller.listBooks[position].title
         val deleteDialog = DialogDeleteBook(position, bookName) { pos ->
-            // Obtiene el NavHostFragment y el fragmento activo
             val navHostFragment =
                 supportFragmentManager.findFragmentById(R.id.fragmentContainerView) as? NavHostFragment
             val currentFragment = navHostFragment?.childFragmentManager?.fragments?.get(0)
 
             if (currentFragment is FragmentBooksRead) {
-                // Encuentra el RecyclerView dentro del fragmento
-                val recyclerView =
-                    currentFragment.view?.findViewById<RecyclerView>(R.id.my_recycler_view)
-                if (recyclerView != null) {
-                    // Llama al controlador para borrar el libro
-                    controller.deleteBook(pos, recyclerView)
-                }
+                currentFragment.deleteBook(pos) // Llama al método del fragmento
             }
         }
-            deleteDialog.show(supportFragmentManager, "DialogDeleteBook")
-        }
+        deleteDialog.show(supportFragmentManager, "DialogDeleteBook")
+    }
 
     private fun openAddBookDialog() {
         val dialog = DialogNewBook { newBook ->
             val navHostFragment =
                 supportFragmentManager.findFragmentById(R.id.fragmentContainerView) as? NavHostFragment
             val currentFragment = navHostFragment?.childFragmentManager?.fragments?.get(0)
+
             if (currentFragment is FragmentBooksRead) {
-                // Busca el RecyclerView dentro del fragmento
-                val recyclerView =
-                    currentFragment.view?.findViewById<RecyclerView>(R.id.my_recycler_view)
-                if (recyclerView != null) {
-                    // Actualiza el RecyclerView usando el controlador
-                    controller.addBook(newBook, recyclerView)
-                    controller.setAdapter(recyclerView)
-                }
+                currentFragment.addBook(newBook) // Llama al método del fragmento
             }
         }
         dialog.show(supportFragmentManager, "DialogNewBook")
+    }
+
+    private fun logout() {
+        FirebaseAuth.getInstance().signOut()
+        val intent = Intent(this, LoginActivity::class.java)
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        startActivity(intent)
+        finish()
     }
 }

@@ -20,6 +20,9 @@
     <item android:title="" >
         <menu >
             <item
+                android:clickable="true"
+                android:focusable="true"
+                android:id="@+id/logout"
                 android:title="Logout"
                 android:icon="@drawable/baseline_logout_24"
                 />

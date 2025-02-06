@@ -47,4 +47,7 @@ class FragmentBooksRead : Fragment() {
         controller.addBook(newBook, binding.myRecyclerView)
     }
 
+    fun deleteBook(position: Int) {
+        controller.deleteBook(position, binding.myRecyclerView)
+    }
 }
