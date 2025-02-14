@@ -98,12 +98,6 @@ class DialogEditBook(
     private fun recoverDataFromLayout(view: View): Book? {
         val binding = DialogNewBookBinding.bind(view)
 
-        val titleEditText = view.findViewById<EditText>(R.id.editTitle)
-        val authorEditText = view.findViewById<EditText>(R.id.editAuthor)
-        val yearEditText = view.findViewById<EditText>(R.id.editYear)
-        val genreEditText = view.findViewById<EditText>(R.id.editGenre)
-        val coverUrlEditText = view.findViewById<EditText>(R.id.editCoverUrl)
-
         val title = binding.editTitle.text.toString().trim()
         val author = binding.editAuthor.text.toString().trim()
         val year = binding.editYear.text.toString().trim()
@@ -112,31 +106,29 @@ class DialogEditBook(
 
         // Validar que los campos obligatorios no estén vacíos
         if (title.isEmpty()) {
-            titleEditText.error = "Este campo es obligatorio"
+            binding.editTitle.error = "Este campo es obligatorio"
             return null
         }
-
         if (author.isEmpty()) {
-            authorEditText.error = "Este campo es obligatorio"
+            binding.editAuthor.error = "Este campo es obligatorio"
             return null
         }
-
         if (year.isEmpty()) {
-            yearEditText.error = "Este campo es obligatorio"
+            binding.editYear.error = "Este campo es obligatorio"
             return null
         }
-
         if (genre.isEmpty()) {
-            genreEditText.error = "Este campo es obligatorio"
+            binding.editGenre.error = "Este campo es obligatorio"
             return null
         }
 
         return Book(
+            id = bookToUpdate.id, // 🔥 Mantenemos el ID del libro original
             title = title,
             author = author,
             year = year.toInt(),
             genrer = genre,
-            cover = if (coverUrl.isNotEmpty()) coverUrl else "default_cover_url"  // Si no se proporciona URL, usa una predeterminada
+            cover = if (coverUrl.isNotEmpty()) coverUrl else "default_cover_url"
         )
     }
 }

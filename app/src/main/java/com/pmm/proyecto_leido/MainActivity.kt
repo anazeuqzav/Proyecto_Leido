@@ -23,13 +23,11 @@ import com.pmm.proyecto_leido.databinding.ActivityMainBinding
 import com.pmm.proyecto_leido.dialogues.DialogDeleteBook
 import com.pmm.proyecto_leido.dialogues.DialogNewBook
 import com.pmm.proyecto_leido.fragments.FragmentBooksRead
-
 class MainActivity : AppCompatActivity() {
 
     private lateinit var navController: NavController
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityMainBinding
-    private val controller: Controller by lazy { Controller(context = this) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,40 +43,45 @@ class MainActivity : AppCompatActivity() {
         binding.appBarLayoutDrawer.fabAdd.setOnClickListener {
             openAddBookDialog()
         }
-    }
 
-    private fun setupNavigationDrawer() {
-        val navHostFragment = supportFragmentManager.findFragmentById(R.id.fragmentContainerView) as NavHostFragment
-        navController = navHostFragment.navController
-        val toolbar = binding.appBarLayoutDrawer.toolbar
-
-        // Configurar el color del icono de navegación
-        toolbar.post {
-            toolbar.navigationIcon?.setTint(ContextCompat.getColor(this, R.color.md_theme_onPrimary))
-        }
-
-        // Configurar destinos principales
-        appBarConfiguration = AppBarConfiguration(
-            setOf(R.id.fragmentBooksRead, R.id.fragmentBooksToRead, R.id.fragmentFavouritesBooks),
-            binding.drawerLayout
-        )
-
-        setSupportActionBar(toolbar)
-        setupActionBarWithNavController(navController, appBarConfiguration)
-        binding.navigationView.setupWithNavController(navController)
-
-        // **Interceptar clics en el menú**
+        // **Interceptar clics en el menú lateral**
         binding.navigationView.setNavigationItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.logout -> {
                     logout()
                     true
                 }
-                else -> {
-                    NavigationUI.onNavDestinationSelected(item, navController) || super.onOptionsItemSelected(item)
-                }
+                else -> NavigationUI.onNavDestinationSelected(item, navController) || super.onOptionsItemSelected(item)
             }
         }
+
+        // Configurar el botón flotante para agregar un libro
+        binding.appBarLayoutDrawer.fabAdd.setOnClickListener {
+            openAddBookDialog()
+        }
+    }
+
+    private fun setupNavigationDrawer() {
+        // Obtener NavHostFragment y NavController
+        val navHostFragment = supportFragmentManager.findFragmentById(R.id.fragmentContainerView) as NavHostFragment
+        navController = navHostFragment.navController
+        val toolbar = binding.appBarLayoutDrawer.toolbar
+
+        // Cambiar color del icono de navegación
+        toolbar.navigationIcon?.setTint(ContextCompat.getColor(this, R.color.md_theme_onPrimary))
+
+        // Configurar destinos principales
+        appBarConfiguration = AppBarConfiguration(
+            setOf(R.id.fragmentHome, R.id.fragmentBooksRead, R.id.fragmentBooksToRead, R.id.fragmentFavouritesBooks),
+            binding.drawerLayout
+        )
+
+        // Configurar Toolbar
+        setSupportActionBar(toolbar)
+
+        // Vincular Navigation Controller con Toolbar y Drawer
+        setupActionBarWithNavController(navController, appBarConfiguration)
+        binding.navigationView.setupWithNavController(navController)
     }
 
     override fun onSupportNavigateUp(): Boolean {
@@ -90,19 +93,26 @@ class MainActivity : AppCompatActivity() {
         return true
     }
 
-
-    fun showDeleteDialog(position: Int) {
-        val bookName = controller.listBooks[position].title
-        val deleteDialog = DialogDeleteBook(position, bookName) { pos ->
-            val navHostFragment =
-                supportFragmentManager.findFragmentById(R.id.fragmentContainerView) as? NavHostFragment
-            val currentFragment = navHostFragment?.childFragmentManager?.fragments?.get(0)
-
-            if (currentFragment is FragmentBooksRead) {
-                currentFragment.deleteBook(pos) // Llama al método del fragmento
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.fragmentHome -> {
+                navController.navigate(R.id.fragmentHome)
+                true
             }
+            R.id.fragmentBooksRead -> {
+                navController.navigate(R.id.fragmentBooksRead)
+                true
+            }
+            R.id.fragmentBooksToRead -> {
+                navController.navigate(R.id.fragmentBooksToRead)
+                true
+            }
+            R.id.fragmentFavouritesBooks -> {
+                navController.navigate(R.id.fragmentFavouritesBooks)
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
         }
-        deleteDialog.show(supportFragmentManager, "DialogDeleteBook")
     }
 
     private fun openAddBookDialog() {

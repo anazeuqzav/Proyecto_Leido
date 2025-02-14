@@ -91,7 +91,7 @@ class DialogNewBook(
             author = author,
             year = year.toInt(),
             genrer = genre,
-            cover = if (coverUrl.isNotEmpty()) coverUrl else "https://m.media-amazon.com/images/I/7125+5E40JL.jpg" // Si la URL está vacía, se asigna una URL por defecto
+            cover = if (coverUrl.isNotEmpty()) coverUrl else "E:\\Proyecto_Leido\\app\\src\\main\\res\\drawable\\ic_placeholder.png" // Si la URL está vacía, se asigna una URL por defecto
         )
     }
 }

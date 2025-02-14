@@ -84,5 +84,9 @@ dependencies {
     implementation(platform("com.google.firebase:firebase-bom:33.1.0")) // O una versión más baja compatible
     implementation("com.google.firebase:firebase-analytics")
     implementation("com.google.firebase:firebase-auth")
+    implementation("com.google.firebase:firebase-firestore-ktx:24.4.3")
+    implementation ("com.google.android.gms:play-services-base:18.2.0")
+
+
 
 }

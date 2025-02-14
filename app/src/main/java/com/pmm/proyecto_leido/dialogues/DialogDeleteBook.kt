@@ -14,8 +14,8 @@ class DialogDeleteBook(
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val builder = AlertDialog.Builder(requireContext())
-        builder.setMessage("¿Deseas borrar el libro '$name'?")
-            .setPositiveButton("Sí") { _, _ ->
+        builder.setMessage("Do you want to delete the book '$name'?")
+            .setPositiveButton("Yes") { _, _ ->
                 // Llamar a la función que maneja la eliminación
                 onDeleteBookDialog(pos)
             }

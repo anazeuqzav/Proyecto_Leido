@@ -4,6 +4,7 @@ import com.pmm.proyecto_leido.interfaces.InterfaceDao
 import com.pmm.proyecto_leido.models.Book
 import com.pmm.proyecto_leido.object_models.Repository
 
+/*
 class DaoBooks private constructor(): InterfaceDao {
 
     companion object {
@@ -13,6 +14,7 @@ class DaoBooks private constructor(): InterfaceDao {
         }
     }
 
+
     // Método que accede a los datos (en este caso, libros) y los devuelve
     override fun getDataBook(): List<Book> = Repository().getBooks()
-}
+}*/

@@ -137,7 +137,7 @@ class LoginActivity : AppCompatActivity() {
      * Navega a la actividad principal de la aplicación.
      */
     private fun navigateToMainActivity() {
-        val intent = Intent(this, WelcomeActivity::class.java)
+        val intent = Intent(this, MainActivity::class.java)
         startActivity(intent)
         finish()
     }

@@ -4,6 +4,12 @@
     tools:showIn ="navigation_view">
 
     <group android:checkableBehavior="single">
+
+        <item android:title="Home"
+            android:id="@+id/fragmentHome"
+            android:icon="@drawable/baseline_home_24"
+            />
+
         <item android:title="Books I've already read"
             android:id="@+id/fragmentBooksRead"
             android:icon="@drawable/baseline_bookmark_24"
