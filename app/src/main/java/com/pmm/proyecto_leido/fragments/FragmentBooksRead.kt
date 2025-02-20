@@ -47,7 +47,6 @@ class FragmentBooksRead : Fragment() {
         controller.entidades.observe(viewLifecycleOwner) { lista ->
             bookAdapter.submitList(lista.toMutableList()) // Actualizar el RecyclerView
         }
-
     }
 
     private fun deleteBook(position: Int) {
@@ -66,6 +65,7 @@ class FragmentBooksRead : Fragment() {
         }
         editDialog.show(parentFragmentManager, "EditBookDialog")
     }
+
     fun addBook(newBook: Book) {
         controller.agregarEntidad(newBook)
     }

@@ -80,7 +80,9 @@ dependencies {
     debugImplementation(libs.androidx.ui.test.manifest)
     implementation(libs.glide)
     annotationProcessor(libs.compiler)
+    annotationProcessor ("com.github.bumptech.glide:compiler:4.15.1")
     implementation(kotlin("script-runtime"))
+    implementation ("com.github.bumptech.glide:glide:4.15.1")
     implementation(platform("com.google.firebase:firebase-bom:33.1.0")) // O una versión más baja compatible
     implementation("com.google.firebase:firebase-analytics")
     implementation("com.google.firebase:firebase-auth")

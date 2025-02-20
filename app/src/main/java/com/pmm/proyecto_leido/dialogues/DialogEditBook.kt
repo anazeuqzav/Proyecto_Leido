@@ -123,7 +123,7 @@ class DialogEditBook(
         }
 
         return Book(
-            id = bookToUpdate.id, // 🔥 Mantenemos el ID del libro original
+            id = bookToUpdate.id, // Mantenemos el ID del libro original
             title = title,
             author = author,
             year = year.toInt(),
