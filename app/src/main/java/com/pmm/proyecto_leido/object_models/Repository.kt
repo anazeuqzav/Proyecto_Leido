@@ -2,6 +2,7 @@ package com.pmm.proyecto_leido.object_models
 
 import com.pmm.proyecto_leido.models.Book
 import android.util.Log
+import android.widget.Toast
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.tasks.await
 
@@ -38,6 +39,7 @@ object Repository {
             val documentRef = db.collection(COLLECTION_NAME).add(entidad).await()
             val id = documentRef.id
             documentRef.update("id", id).await() // Guardar el ID en Firebase
+
             true
         } catch (e: Exception) {
             Log.e("Repository", "Error añadiendo", e)

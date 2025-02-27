@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -56,6 +57,7 @@ class FragmentBooksRead : Fragment() {
             val bookToDelete = bookAdapter.currentList[pos]
             controller.eliminarEntidad(bookToDelete.id)
         }.show(parentFragmentManager, "DeleteBookDialog")
+        Toast.makeText(context, "Libro eliminado correctamente", Toast.LENGTH_SHORT).show()
     }
 
     private fun updateBook(position: Int) {
@@ -64,51 +66,12 @@ class FragmentBooksRead : Fragment() {
             controller.actualizarEntidad(updatedBook)
         }
         editDialog.show(parentFragmentManager, "EditBookDialog")
+        Toast.makeText(context, "Libro editado correctamente", Toast.LENGTH_SHORT).show()
     }
 
     fun addBook(newBook: Book) {
         controller.agregarEntidad(newBook)
+        Toast.makeText(context, "Libro agregado correctamente", Toast.LENGTH_SHORT).show()
     }
 
 }
-
-
-
-/*
-class FragmentBooksRead : Fragment() {
-
-    private lateinit var binding: FragmentBooksReadBinding
-    private lateinit var controller: Controller
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        // Inicializar el ViewBinding
-        binding = FragmentBooksReadBinding.inflate(inflater, container, false)
-        return binding.root
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-        // Inicializar el controlador y cargar los datos
-        controller = Controller(requireContext())
-        controller.initData()
-
-        // Configurar el RecyclerView
-        initRecyclerView()
-    }
-
-    private fun initRecyclerView() {
-        binding.myRecyclerView.layoutManager = LinearLayoutManager(requireContext())
-        controller.setAdapter(binding.myRecyclerView) // Pasar RecyclerView al controlador
-    }
-
-
-
-    fun deleteBook(position: Int) {
-        controller.deleteBook(position, binding.myRecyclerView)
-    }
-}
-*/
