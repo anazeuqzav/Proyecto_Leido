@@ -3,21 +3,32 @@ package com.pmm.proyecto_leido.adapter
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.pmm.proyecto_leido.MainActivity
 import com.pmm.proyecto_leido.R
 import com.pmm.proyecto_leido.databinding.ItemBookBinding
 import com.pmm.proyecto_leido.models.Book
 
 /**
- * El ViewHolder es responsable de contener y gestionar los elementos visuales de cada ítem del RecyclerView.
+ * ViewHolder que gestiona y muestra los elementos visuales de cada ítem en el RecyclerView.
+ * Se encarga de renderizar la información del libro y manejar los eventos de edición y eliminación.
+ *
+ * @param view Vista asociada al ViewHolder.
+ * @param deleteOnClick Función lambda que se ejecuta al hacer clic en el botón de eliminar.
+ * @param updateOnClick Función lambda que se ejecuta al hacer clic en el botón de actualizar.
  */
-class BookViewHolder(view: View,
-                     private val deleteOnClick: (Int) -> Unit,
-                     private val updateOnClick: (Int) -> Unit
+class BookViewHolder(
+    view: View,
+    private val deleteOnClick: (Int) -> Unit,
+    private val updateOnClick: (Int) -> Unit
 ) : RecyclerView.ViewHolder(view) {
-    private val binding = ItemBookBinding.bind(view) // Usa ViewBinding para mapear elementos
 
-    // Renderiza un libro
+    /** ViewBinding para acceder a los elementos de la vista. */
+    private val binding = ItemBookBinding.bind(view)
+
+    /**
+     * Renderiza los datos de un libro en la vista del ViewHolder.
+     *
+     * @param book Objeto [Book] que contiene la información del libro.
+     */
     fun renderize(book: Book) {
         binding.bookTitle.text = book.title
         binding.bookAuthor.text = book.author
@@ -28,22 +39,23 @@ class BookViewHolder(view: View,
             .load(book.cover)
             .centerCrop() // Escalar la imagen al centro
             .placeholder(R.drawable.ic_placeholder) // Imagen por defecto mientras carga
-            .into(binding.bookCover) // Elemento ImageView donde se muestra
+            .into(binding.bookCover) // Elemento ImageView donde se muestra la portada
 
-        // Configurar los listeners
-        setOnClickListener(position)
+        // Configurar los listeners para los botones de editar y eliminar
+        setOnClickListener(adapterPosition)
     }
 
-    // Configura los listeners para los botones de editar y eliminar
+    /**
+     * Configura los listeners para los botones de eliminar y actualizar.
+     *
+     * @param position Posición del elemento en el RecyclerView.
+     */
     private fun setOnClickListener(position: Int) {
-        // Configurar el listener para el botón de eliminar
         binding.deleteButton.setOnClickListener {
-            // Llamar al método para mostrar el diálogo de eliminación
-            deleteOnClick(adapterPosition)
+            deleteOnClick(adapterPosition) // Llama a la función lambda para eliminar el libro
         }
         binding.updateButton.setOnClickListener {
-            updateOnClick(position) // Llama a la función lambda de actualizar
+            updateOnClick(position) // Llama a la función lambda para actualizar el libro
         }
-
     }
 }

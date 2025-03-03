@@ -1,4 +1,6 @@
 package com.pmm.proyecto_leido
+
+
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -12,137 +14,133 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseAuthException
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import com.google.firebase.auth.FirebaseAuthUserCollisionException
 import com.google.firebase.auth.FirebaseAuthWeakPasswordException
 import com.google.firebase.auth.auth
 
+/**
+ * Esta actividad gestiona el registro de usuarios en Firebase Authentication mediante email y contraseña.
+ * Sus principales funciones son:
+ * Permite al usuario introducir su email y contraseña.
+ * Si el registro es exitoso, envía un correo de verificación y se envía al usuario a LoginActivity.
+ */
+class RegisterActivity : AppCompatActivity() {
 
-class RegisterActivity: AppCompatActivity() {
-
-    private lateinit var btnRegister : Button
-    private lateinit var btnLastRegister : TextView
-    private lateinit var editUser : EditText
-    private lateinit var editPassword : EditText
-    private lateinit var editRepeatPassword : EditText
-    private lateinit var auth : FirebaseAuth  //para autenticarme en firebase
-
-    //pruebasdam24.a@gmail.com
+    // Componentes de la UI
+    private lateinit var btnRegister: Button
+    private lateinit var btnLastRegister: TextView
+    private lateinit var editUser: EditText
+    private lateinit var editPassword: EditText
+    private lateinit var editRepeatPassword: EditText
+    private lateinit var auth: FirebaseAuth // Instancia para autenticación con Firebase
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_register)
+
+        // Ajusta los márgenes para barras del sistema
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
 
-        init()  //referenciamos los componentes.
-        start() //comienza todo.
+        init()  // Inicializa los componentes de la interfaz
+        start() // Configura los eventos de los botones
     }
 
-    private fun init(){
+    /**
+     * Inicializa las referencias a los elementos de la UI y la instancia de FirebaseAuth.
+     */
+    private fun init() {
         btnRegister = findViewById(R.id.btn_register_in_register)
         btnLastRegister = findViewById(R.id.btn_last_register)
         editUser = findViewById(R.id.edit_user_register)
         editPassword = findViewById(R.id.edit_pass_register)
         editRepeatPassword = findViewById(R.id.pass_register_repeat_in_register)
-
-        auth = Firebase.auth  //Creamos nuestro objeto de autenticación
-
+        auth = Firebase.auth // Inicializa Firebase Authentication
     }
 
-
+    /**
+     * Configura los eventos de los botones.
+     */
     private fun start() {
-        btnRegister.setOnClickListener{
+        // Evento para el botón de registro
+        btnRegister.setOnClickListener {
             val email = editUser.text.toString()
             val pass = editPassword.text.toString()
             val repeatPass = editRepeatPassword.text.toString()
-            if (pass != repeatPass
-                || email.isEmpty()
-                || pass.isEmpty()
-                || repeatPass.isEmpty())
+
+            // Validación de campos
+            if (pass != repeatPass || email.isEmpty() || pass.isEmpty() || repeatPass.isEmpty()) {
                 Toast.makeText(this, "Campos vacíos y/o password diferentes", Toast.LENGTH_LONG).show()
-            else{
-                //todo correcto, vamos a verificar el registro.
-                /*
-                    Supongo que this, hará referencia al objeto Button, no al Activity.
-                     Cuando creamos una lambda para una llamada de órden superior, el contexto
-                     no tiene porqué ser el Activity. Hay que curarse en salud. registerUser, es un
-                     método mío, no predefinido como el caso del .setOnClickListener de un Buttom, que
-                     en este caso, el this hace referencia al activity, no al buttom.
-                     Cuando creemos una lambda sin parámetros, cuidado con el this porque no es el Activity.
-                */
-                registerUser (email, pass){
-                        result, msg ->
+            } else {
+                // Intentar registrar el usuario
+                registerUser(email, pass) { result, msg ->
                     Toast.makeText(this@RegisterActivity, msg, Toast.LENGTH_LONG).show()
-                    if (result)
-                        startActivityLogin()
+                    if (result) startActivityLogin()
                 }
             }
         }
 
-        btnLastRegister.setOnClickListener{
-            // Como la lambda tiene un parámetro view, el this es el Activity
-                view->
-            val intent = Intent (this, LoginActivity::class.java)
+        // Evento para el botón de "Ya tengo cuenta"
+        btnLastRegister.setOnClickListener {
+            val intent = Intent(this, LoginActivity::class.java)
             startActivity(intent)
-            finish()
+            finish() // Cierra la actividad actual
         }
     }
 
+    /**
+     * Inicia la actividad de inicio de sesión y cierra la actividad de registro.
+     */
     private fun startActivityLogin() {
-        //Tengo que lanzar un intent con el Activity a loguear.
         val intent = Intent(this, LoginActivity::class.java)
         startActivity(intent)
-        finish() //No quiero que sigua el Activity del registro.
-
+        finish()
     }
 
+    /**
+     * Registra un usuario en Firebase Authentication.
+     * @param email Correo electrónico del usuario
+     * @param pass Contraseña del usuario
+     * @param onResult Callback con el resultado del registro
+     */
     private fun registerUser(email: String, pass: String, onResult: (Boolean, String) -> Unit) {
         auth.createUserWithEmailAndPassword(email, pass)
-            .addOnCompleteListener(this){
-                    taskAssin->
-                if (taskAssin.isSuccessful){
-                    //enviaremos un email de confirmación
-                    val user = auth.currentUser
-                    user?.sendEmailVerification()
-                        ?.addOnCompleteListener{
-                                taskVerification ->
-                            var msg = ""
-                            if (taskVerification.isSuccessful)
-                                msg = "Usuario Registrado. Verifique su correo"
-                            else
-                                msg = "Usuario Registrado. ${taskVerification.exception?.message}"
-                            auth.signOut() //tiene que verificar antes el email
+            .addOnCompleteListener(this) { task ->
+                if (task.isSuccessful) {
+                    // Enviar email de verificación
+                    auth.currentUser?.sendEmailVerification()
+                        ?.addOnCompleteListener { verificationTask ->
+                            val msg = if (verificationTask.isSuccessful) {
+                                "Usuario Registrado. Verifique su correo"
+                            } else {
+                                "Usuario Registrado. ${verificationTask.exception?.message}"
+                            }
+                            auth.signOut() // Cerrar sesión para obligar la verificación
                             onResult(true, msg)
                         }
-                        ?.addOnFailureListener{
-                                exception->
-                            Log.e("RegisterActivity", "Fallo al enviar correo de verificación: ${exception.message}")
-                            onResult(false, "No se pudo enviar el correo de verificación: ${exception.message}")
+                        ?.addOnFailureListener { exception ->
+                            Log.e("RegisterActivity", "Fallo al enviar correo: ${exception.message}")
+                            onResult(false, "No se pudo enviar el correo: ${exception.message}")
                         }
-
-                }else{
-                    try{
-                        throw taskAssin.exception ?:Exception ("Error desconocido")
-                    } catch (e: FirebaseAuthUserCollisionException){
-                        onResult (false, "Ese usuario ya existe")
-                    }catch (e: FirebaseAuthWeakPasswordException){
-                        onResult (false, "La contraseña es débil: ${e.reason}")
+                } else {
+                    // Manejo de errores en el registro
+                    try {
+                        throw task.exception ?: Exception("Error desconocido")
+                    } catch (e: FirebaseAuthUserCollisionException) {
+                        onResult(false, "Ese usuario ya existe")
+                    } catch (e: FirebaseAuthWeakPasswordException) {
+                        onResult(false, "Contraseña débil: ${e.reason}")
+                    } catch (e: FirebaseAuthInvalidCredentialsException) {
+                        onResult(false, "Email no válido")
+                    } catch (e: Exception) {
+                        onResult(false, e.message.toString())
                     }
-                    catch (e: FirebaseAuthInvalidCredentialsException){
-                        onResult (false, "El email proporcionado, no es válido")
-                    }
-                    catch (e: Exception){
-                        onResult (false, e.message.toString())
-                    }
-
                 }
             }
-
     }
 }

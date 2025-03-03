@@ -14,14 +14,24 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import com.google.firebase.auth.FirebaseAuthInvalidUserException
 
+/**
+ * Esta clase maneja la pantalla de inicio de sesión de la aplicación y se encarga de:
+ * Autenticación con Firebase (FirebaseAuth)
+ * Manejo de errores de autenticación
+ * Guardado y verificación de sesiones con SharedPreferences
+ * Recuperación de contraseña
+ */
 class LoginActivity : AppCompatActivity() {
 
+    // Objeto global para definir la clave de SharedPreferences
     object Global {
         var sharedPreferences = "sharedpreferences"
     }
 
-
+    // Instancia de Firebase Authentication
     private lateinit var auth: FirebaseAuth
+
+    // Elementos de la interfaz de usuario
     private lateinit var emailEditText: EditText
     private lateinit var passwordEditText: EditText
     private lateinit var loginButton: Button
@@ -32,31 +42,34 @@ class LoginActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         // Inicializar Firebase Auth
-        auth = FirebaseAuth.getInstance() // ✅ Inicializamos antes de usar
+        auth = FirebaseAuth.getInstance()
 
-        // Verificar si hay una sesión iniciada
+        // Verificar si hay una sesión abierta
         verifyOpenSession()
 
+        // Configurar la interfaz de usuario
         setContentView(R.layout.activity_login)
 
-        // Referencias a los elementos del layout
+        // Asignar referencias a los elementos de la interfaz
         emailEditText = findViewById(R.id.usernameEditText)
         passwordEditText = findViewById(R.id.passwordEditText)
         loginButton = findViewById(R.id.loginButton)
         registerButton = findViewById(R.id.registerButton)
         recoverPasswordButton = findViewById(R.id.recoverPasswordButton)
 
-        // Configurar botones
+        // Configurar el botón de inicio de sesión
         loginButton.setOnClickListener {
             val email = emailEditText.text.toString().trim()
             val password = passwordEditText.text.toString().trim()
             handleLogin(email, password)
         }
 
+        // Configurar el botón de registro
         registerButton.setOnClickListener {
             startActivity(Intent(this, RegisterActivity::class.java))
         }
 
+        // Configurar el botón de recuperación de contraseña
         recoverPasswordButton.setOnClickListener {
             val email = emailEditText.text.toString().trim()
             if (email.isNotEmpty()) {
@@ -142,6 +155,9 @@ class LoginActivity : AppCompatActivity() {
         finish()
     }
 
+    /**
+     * Verifica si hay una sesión activa y redirige al usuario si es necesario.
+     */
     fun verifyOpenSession() {
         val openSession: SharedPreferences = getSharedPreferences(Global.sharedPreferences, Context.MODE_PRIVATE)
         val email = openSession.getString("email", null)
@@ -154,13 +170,13 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
-    fun saveSession(correo:String, password:String){
-        var saveSession: SharedPreferences.Editor =this.getSharedPreferences(Global.sharedPreferences, Context.MODE_PRIVATE).edit()
+    /**
+     * Guarda la sesión del usuario en SharedPreferences.
+     */
+    fun saveSession(correo: String, password: String) {
+        val saveSession: SharedPreferences.Editor = this.getSharedPreferences(Global.sharedPreferences, Context.MODE_PRIVATE).edit()
         saveSession.putString("email", correo)
         saveSession.putString("password", password)
         saveSession.apply()
-        saveSession.commit()
     }
-
 }
-

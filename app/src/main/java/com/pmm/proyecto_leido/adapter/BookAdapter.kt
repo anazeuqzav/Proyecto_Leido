@@ -13,15 +13,28 @@ import com.pmm.proyecto_leido.models.Book
 
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
-
+/**
+ * Adaptador para la lista de libros en un RecyclerView.
+ * Utiliza ListAdapter para mejorar la eficiencia en la actualización de los datos.
+ *
+ * @param deleteOnClick Función lambda que se ejecuta al hacer clic en el botón de eliminar.
+ * @param updateOnClick Función lambda que se ejecuta al hacer clic en el botón de actualizar.
+ */
 class BookAdapter(
     private val deleteOnClick: (Int) -> Unit,
     private val updateOnClick: (Int) -> Unit
-) : ListAdapter<Book, BookViewHolder>(BookDiffCallback()) { // Usamos ListAdapter
+) : ListAdapter<Book, BookViewHolder>(BookDiffCallback()) { // Usamos ListAdapter para una mejor gestión de la lista
 
+    /**
+     * Crea y devuelve un nuevo ViewHolder para un elemento de la lista.
+     *
+     * @param parent El ViewGroup en el que se insertará la vista del ítem.
+     * @param viewType Tipo de vista del ítem (no se usa en este caso).
+     * @return Un nuevo [BookViewHolder] configurado con la vista del ítem.
+     */
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BookViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
-        val layoutItemBook = R.layout.item_book // El layout para un ítem
+        val layoutItemBook = R.layout.item_book // Referencia al layout de un ítem
         return BookViewHolder(
             layoutInflater.inflate(layoutItemBook, parent, false),
             deleteOnClick,
@@ -29,17 +42,41 @@ class BookAdapter(
         )
     }
 
+    /**
+     * Enlaza los datos de un libro con el ViewHolder.
+     *
+     * @param holder El ViewHolder que mostrará los datos.
+     * @param position Posición del libro en la lista.
+     */
     override fun onBindViewHolder(holder: BookViewHolder, position: Int) {
-        holder.renderize(getItem(position)) // Ahora usamos getItem() en lugar de listBooks[position]
+        holder.renderize(getItem(position)) // Utiliza getItem() de ListAdapter para obtener el elemento actual
     }
 }
 
-// Implementación de DiffUtil para optimizar la comparación de listas
+/**
+ * Implementación de DiffUtil para optimizar la comparación de listas en BookAdapter.
+ * Ayuda a identificar cambios en los elementos de la lista y mejorar la eficiencia del RecyclerView.
+ */
 class BookDiffCallback : DiffUtil.ItemCallback<Book>() {
+
+    /**
+     * Determina si dos objetos [Book] representan el mismo ítem en la lista.
+     *
+     * @param oldItem Objeto existente en la lista.
+     * @param newItem Nuevo objeto que se quiere comparar.
+     * @return `true` si ambos elementos tienen el mismo ID, `false` en caso contrario.
+     */
     override fun areItemsTheSame(oldItem: Book, newItem: Book): Boolean {
-        return oldItem.id == newItem.id // Comparar por ID
+        return oldItem.id == newItem.id // Compara por ID para determinar si es el mismo libro
     }
 
+    /**
+     * Determina si dos objetos [Book] tienen el mismo contenido.
+     *
+     * @param oldItem Objeto existente en la lista.
+     * @param newItem Nuevo objeto que se quiere comparar.
+     * @return `true` si los contenidos de ambos libros son idénticos, `false` en caso contrario.
+     */
     override fun areContentsTheSame(oldItem: Book, newItem: Book): Boolean {
         return oldItem.title == newItem.title &&
                 oldItem.author == newItem.author &&
@@ -48,49 +85,3 @@ class BookDiffCallback : DiffUtil.ItemCallback<Book>() {
                 oldItem.cover == newItem.cover
     }
 }
-
-/**
- * Adaptador que conecta una fuente de datos con una vista, en este caso, el adaptador
- * BookAdapter conecta una lista de libros (listBooks) con un RecyclerView. Este adaptador maneja
- * cómo se crean, enlazan y muestran los ítems de la lista en el RecyclerView
- */
-
-
-/*
-class BookAdapter(
-    private val listBooks: MutableList<Book>,
-    private val deleteOnClick: (Int) -> Unit,
-    private val updateOnClick: (Int) -> Unit
-    ) : RecyclerView.Adapter<BookViewHolder>() {
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BookViewHolder {
-        val layoutInflater = LayoutInflater.from(parent.context)
-        val layoutItemBook = R.layout.item_book // El layout para un ítem
-        return BookViewHolder(
-            layoutInflater.inflate(layoutItemBook, parent, false),
-            deleteOnClick,
-            updateOnClick
-            )
-    }
-
-    override fun onBindViewHolder(holder: BookViewHolder, position: Int) {
-        holder.renderize(listBooks[position]) // Renderizamos los datos
-    }
-
-    override fun getItemCount(): Int = listBooks.size
-
-    // Método para agregar un libro
-    fun addBook(newBook: Book) {
-        listBooks.add(newBook) // Añadir el libro a la lista
-        notifyItemInserted(listBooks.size - 1) // Notificar que se ha insertado un nuevo ítem
-    }
-
-    fun updateCoverImage(book: Book, imageView: ImageView) {
-        Glide.with(imageView.context)
-            .load(book.cover) // Cargar la imagen desde la URL de la portada
-            .centerCrop()
-            .placeholder(R.drawable.ic_placeholder)
-            .into(imageView)
-    }
-
-}*/

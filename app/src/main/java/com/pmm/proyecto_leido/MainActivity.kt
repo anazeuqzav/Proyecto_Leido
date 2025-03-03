@@ -1,12 +1,9 @@
 package com.pmm.proyecto_leido
 
-import android.content.Context
 import android.content.Intent
-import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.navigation.NavController
@@ -16,24 +13,34 @@ import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
-import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.auth.FirebaseAuth
-import com.pmm.proyecto_leido.LoginActivity.Global
-import com.pmm.proyecto_leido.controler.Controller
 import com.pmm.proyecto_leido.databinding.ActivityMainBinding
-import com.pmm.proyecto_leido.dialogues.DialogDeleteBook
 import com.pmm.proyecto_leido.dialogues.DialogNewBook
 import com.pmm.proyecto_leido.fragments.FragmentBooksRead
+
+/**
+ * Es la actividad principal de la aplicación y gestiona la navegación entre
+ * las diferentes secciones mediante un Navigation Drawer y un NavController.
+ * Configura el Navigation Drawer
+ * Permite moverse entre los fragmentos
+ * Controla el menú lateral y opciones del Toolbar
+ * Intercepta clics en los elementos del menú para navegar entre fragmentos.
+ * Incluye una opción para cerrar sesión (logout).
+ * Maneja el botón flotante fabAdd
+ */
 class MainActivity : AppCompatActivity() {
 
+    // Controlador de navegación
     private lateinit var navController: NavController
+    // Configuración de la barra de navegación superior
     private lateinit var appBarConfiguration: AppBarConfiguration
+    // Binding para acceder a las vistas
     private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        // Inicializa ViewBinding
+        // Inicializa ViewBinding para acceder a las vistas del layout
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
@@ -45,7 +52,7 @@ class MainActivity : AppCompatActivity() {
             openAddBookDialog()
         }
 
-        // **Interceptar clics en el menú lateral**
+        // Manejar clics en el menú lateral de navegación
         binding.navigationView.setNavigationItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.logout -> {
@@ -55,15 +62,13 @@ class MainActivity : AppCompatActivity() {
                 else -> NavigationUI.onNavDestinationSelected(item, navController) || super.onOptionsItemSelected(item)
             }
         }
-
-        // Configurar el botón flotante para agregar un libro
-        binding.appBarLayoutDrawer.fabAdd.setOnClickListener {
-            openAddBookDialog()
-        }
     }
 
+    /**
+     * Configura el Navigation Drawer y la Toolbar.
+     */
     private fun setupNavigationDrawer() {
-        // Obtener NavHostFragment y NavController
+        // Obtiene el fragmento que contiene la navegación
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.fragmentContainerView) as NavHostFragment
         navController = navHostFragment.navController
         val toolbar = binding.appBarLayoutDrawer.toolbar
@@ -71,7 +76,7 @@ class MainActivity : AppCompatActivity() {
         // Cambiar color del icono de navegación
         toolbar.navigationIcon?.setTint(ContextCompat.getColor(this, R.color.md_theme_onPrimary))
 
-        // Configurar destinos principales
+        // Configuración de los destinos principales del Navigation Drawer
         appBarConfiguration = AppBarConfiguration(
             setOf(R.id.fragmentHome, R.id.fragmentBooksRead, R.id.fragmentBooksToRead, R.id.fragmentFavouritesBooks),
             binding.drawerLayout
@@ -85,15 +90,24 @@ class MainActivity : AppCompatActivity() {
         binding.navigationView.setupWithNavController(navController)
     }
 
+    /**
+     * Permite la navegación hacia atrás con la flecha de la Toolbar.
+     */
     override fun onSupportNavigateUp(): Boolean {
         return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
     }
 
+    /**
+     * Infla el menú de opciones en la Toolbar.
+     */
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.toolbar_op, menu)
         return true
     }
 
+    /**
+     * Maneja la selección de elementos del menú de la Toolbar.
+     */
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.fragmentHome -> {
@@ -116,19 +130,26 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    /**
+     * Abre un diálogo para agregar un nuevo libro.
+     */
     private fun openAddBookDialog() {
         val dialog = DialogNewBook { newBook ->
             val navHostFragment =
                 supportFragmentManager.findFragmentById(R.id.fragmentContainerView) as? NavHostFragment
             val currentFragment = navHostFragment?.childFragmentManager?.fragments?.get(0)
 
+            // Si el fragmento actual es FragmentBooksRead, añadir el libro
             if (currentFragment is FragmentBooksRead) {
-                currentFragment.addBook(newBook) // Llama al método del fragmento
+                currentFragment.addBook(newBook)
             }
         }
         dialog.show(supportFragmentManager, "DialogNewBook")
     }
 
+    /**
+     * Cierra la sesión del usuario y redirige a la pantalla de inicio de sesión.
+     */
     private fun logout() {
         FirebaseAuth.getInstance().signOut()
         val intent = Intent(this, LoginActivity::class.java)
